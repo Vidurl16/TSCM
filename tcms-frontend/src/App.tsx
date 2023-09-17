@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CssBaseline, AppBar, Toolbar, Typography, Container } from '@mui/material';
-import Login from './components/LoginPage';
-import Sidebar from './components/Sidebar';
-import UserList from './components/Users/UsersList';
-import UserCRUD from './components/Users/UsersCRUD';
+import Sidebar from './components/Sidebar.tsx'; 
+import UserCRUD from './components/UserCRUD.tsx'; 
+import UserList from './components/UserList.tsx'; 
+import Login from './components/Login.tsx'; 
 
 const App: React.FC = () => {
   const [authenticated, setAuthenticated] = React.useState(false);
@@ -12,7 +12,6 @@ const App: React.FC = () => {
 
   const handleLogin = () => {
     // If authentication is successful, set `authenticated`
-
     setAuthenticated(true);
   };
 
