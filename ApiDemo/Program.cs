@@ -2,17 +2,23 @@ using API.Controllers;
 using API.Interfaces;
 using API.Services;
 using API.Extensions;
+using API.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<KCP_DbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("KCP_DB"));
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRepositories();
-builder.Services.AddControllers();
-
+builder.Services.AddServices();
 
 var app = builder.Build();
 

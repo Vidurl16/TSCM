@@ -43,5 +43,10 @@ namespace API.Services
                 _userRepository.DeleteUser(user);
             }
         }
+
+        public void UpdateUser(int id, User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
