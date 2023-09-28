@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using API.Interfaces.RepositoryInterfaces;
 using API.Repository.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository;
 
@@ -14,31 +16,36 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public User GetUserById(int id)
+    public async Task<List<User>> GetAllUsersAsync()
     {
-        return _context.Users.Find(id);
+        return await _context.Users.ToListAsync();
     }
 
-    public IEnumerable<User> GetAllUsers()
+    public async Task<User> GetUserByIdAsync(int id)
     {
-        return _context.Users.ToList();
+        return await _context.Users.FindAsync(id);
     }
 
-    public void CreateUser(User user)
+    public async Task<int> AddUserAsync(User user)
     {
         _context.Users.Add(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
+        return user.UserId;
     }
 
-    public void UpdateUser(User user)
+    public async Task<bool> UpdateUserAsync(User user)
     {
-        _context.Users.Update(user);
-        _context.SaveChanges();
+        _context.Entry(user).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public void DeleteUser(User user)
+    public async Task<bool> DeleteUserAsync(int id)
     {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null) return false;
         _context.Users.Remove(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

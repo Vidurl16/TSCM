@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository.Models;
 
-public partial class TestCase
+public partial class TestCases
 {
     [Key]
     [Column("CaseID")]

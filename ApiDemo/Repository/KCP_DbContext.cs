@@ -20,7 +20,7 @@ public partial class KCP_DbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<TestCase> TestCases { get; set; }
+    public virtual DbSet<TestCases> TestCases { get; set; }
 
     public virtual DbSet<TestEnvironment> TestEnvironments { get; set; }
 
@@ -56,7 +56,7 @@ public partial class KCP_DbContext : DbContext
             entity.Property(e => e.RoleId).ValueGeneratedNever();
         });
 
-        modelBuilder.Entity<TestCase>(entity =>
+        modelBuilder.Entity<TestCases>(entity =>
         {
             entity.HasKey(e => e.CaseId).HasName("PK__TestCase__6CAE526C71CA01B4");
 

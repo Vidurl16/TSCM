@@ -9,22 +9,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TestSuitesController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITestSuiteService _testSuiteService;
 
-        public UsersController(IUserService userService)
+        public TestSuitesController(ITestSuiteService testSuiteService)
         {
-            _userService = userService;
+            _testSuiteService = testSuiteService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<TestSuite>>> GetAllTestSuites()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var testSuites = await _testSuiteService.GetAllTestSuitesAsync();
+                return Ok(testSuites);
             }
             catch (Exception ex)
             {
@@ -33,19 +33,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{SuiteId}")]
+        public async Task<ActionResult<TestSuite>> GetTestSuite(int suiteId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var testSuite = await _testSuiteService.GetTestSuiteByIdAsync(suiteId);
 
-                if (user == null)
+                if (testSuite == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(testSuite);
             }
             catch (Exception ex)
             {
@@ -55,15 +55,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<TestSuite>> CreateTestSuite(TestSuite testSuite)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newSuiteId = await _testSuiteService.AddTestSuiteAsync(testSuite);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetTestSuite", new { SuiteId = newSuiteId });
+                return Created(location, testSuite);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{SuiteId}")]
+        public async Task<IActionResult> UpdateTestSuite(int suiteId, TestSuite updatedTestSuite)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _testSuiteService.UpdateTestSuiteAsync(updatedTestSuite);
 
                 if (!success)
                 {
@@ -93,25 +93,13 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{SuiteId}")]
+        public async Task<IActionResult> DeleteTestSuite(int suiteId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _testSuiteService.DeleteTestSuiteAsync(suiteId);
 
                 if (!success)
                 {
-                    return NotFound();
-                }
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception, log it, or return an error response.
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-    }
-}
+                    return NotFound

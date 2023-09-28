@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using API.Repository;
+using API.Interfaces.RepositoryInterfaces;
 
 namespace API.Extensions
 {

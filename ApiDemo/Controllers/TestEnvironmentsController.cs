@@ -9,22 +9,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TestEnvironmentsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITestEnvironmentService _testEnvironmentService;
 
-        public UsersController(IUserService userService)
+        public TestEnvironmentsController(ITestEnvironmentService testEnvironmentService)
         {
-            _userService = userService;
+            _testEnvironmentService = testEnvironmentService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<TestEnvironment>>> GetAllTestEnvironments()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var environments = await _testEnvironmentService.GetAllTestEnvironmentsAsync();
+                return Ok(environments);
             }
             catch (Exception ex)
             {
@@ -33,19 +33,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{EnvironmentId}")]
+        public async Task<ActionResult<TestEnvironment>> GetTestEnvironment(int environmentId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var environment = await _testEnvironmentService.GetTestEnvironmentByIdAsync(environmentId);
 
-                if (user == null)
+                if (environment == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(environment);
             }
             catch (Exception ex)
             {
@@ -55,15 +55,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<TestEnvironment>> CreateTestEnvironment(TestEnvironment environment)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newEnvironmentId = await _testEnvironmentService.AddTestEnvironmentAsync(environment);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetTestEnvironment", new { EnvironmentId = newEnvironmentId });
+                return Created(location, environment);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{EnvironmentId}")]
+        public async Task<IActionResult> UpdateTestEnvironment(int environmentId, TestEnvironment updatedEnvironment)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _testEnvironmentService.UpdateTestEnvironmentAsync(updatedEnvironment);
 
                 if (!success)
                 {
@@ -93,12 +93,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{EnvironmentId}")]
+        public async Task<IActionResult> DeleteTestEnvironment(int environmentId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _testEnvironmentService.DeleteTestEnvironmentAsync(environmentId);
 
                 if (!success)
                 {

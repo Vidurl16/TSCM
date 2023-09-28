@@ -9,22 +9,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class RolesController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public UsersController(IUserService userService)
+        public RolesController(IRoleService roleService)
         {
-            _userService = userService;
+            _roleService = roleService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<Role>>> GetAllRoles()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var roles = await _roleService.GetAllRolesAsync();
+                return Ok(roles);
             }
             catch (Exception ex)
             {
@@ -33,19 +33,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{RoleId}")]
+        public async Task<ActionResult<Role>> GetRole(int roleId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var role = await _roleService.GetRoleByIdAsync(roleId);
 
-                if (user == null)
+                if (role == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(role);
             }
             catch (Exception ex)
             {
@@ -55,15 +55,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<Role>> CreateRole(Role role)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newRoleId = await _roleService.AddRoleAsync(role);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetRole", new { RoleId = newRoleId });
+                return Created(location, role);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{RoleId}")]
+        public async Task<IActionResult> UpdateRole(int roleId, Role updatedRole)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _roleService.UpdateRoleAsync(updatedRole);
 
                 if (!success)
                 {
@@ -93,12 +93,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{RoleId}")]
+        public async Task<IActionResult> DeleteRole(int roleId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _roleService.DeleteRoleAsync(roleId);
 
                 if (!success)
                 {

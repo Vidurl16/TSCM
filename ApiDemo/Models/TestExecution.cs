@@ -31,5 +31,5 @@ public partial class TestExecution
 
     [ForeignKey("CaseId")]
     [InverseProperty("TestExecutions")]
-    public virtual TestCase? Case { get; set; }
+    public virtual TestCases? Case { get; set; }
 }

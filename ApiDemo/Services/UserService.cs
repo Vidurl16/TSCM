@@ -1,52 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using API.Interfaces;
-using API.Repository;
+using API.Interfaces.RepositoryInterfaces;
+using API.Interfaces.ServiceInterfaces;
 using API.Repository.Models;
 
 namespace API.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _repository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository repository)
         {
-            _userRepository = userRepository;
+            _repository = repository;
         }
 
-        public User GetUserById(int id)
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return _userRepository.GetUserById(id);
+            return await _repository.GetAllUsersAsync();
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return _userRepository.GetAllUsers();
+            return await _repository.GetUserByIdAsync(id);
         }
 
-        public void CreateUser(User user)
+        public async Task<int> AddUserAsync(User user)
         {
-            _userRepository.CreateUser(user);
+            return await _repository.AddUserAsync(user);
         }
 
-        public void UpdateUser(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
-            _userRepository.UpdateUser(user);
+            return await _repository.UpdateUserAsync(user);
         }
 
-        public void DeleteUser(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
-            var user = _userRepository.GetUserById(id);
-            if (user != null)
-            {
-                _userRepository.DeleteUser(user);
-            }
-        }
-
-        public void UpdateUser(int id, User user)
-        {
-            throw new NotImplementedException();
+            return await _repository.DeleteUserAsync(id);
         }
     }
 }

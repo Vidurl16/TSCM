@@ -9,22 +9,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TestExecutionsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITestExecutionService _testExecutionService;
 
-        public UsersController(IUserService userService)
+        public TestExecutionsController(ITestExecutionService testExecutionService)
         {
-            _userService = userService;
+            _testExecutionService = testExecutionService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<TestExecution>>> GetAllTestExecutions()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var testExecutions = await _testExecutionService.GetAllTestExecutionsAsync();
+                return Ok(testExecutions);
             }
             catch (Exception ex)
             {
@@ -33,19 +33,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{ExecutionId}")]
+        public async Task<ActionResult<TestExecution>> GetTestExecution(int executionId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var testExecution = await _testExecutionService.GetTestExecutionByIdAsync(executionId);
 
-                if (user == null)
+                if (testExecution == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(testExecution);
             }
             catch (Exception ex)
             {
@@ -55,15 +55,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<TestExecution>> CreateTestExecution(TestExecution testExecution)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newExecutionId = await _testExecutionService.AddTestExecutionAsync(testExecution);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetTestExecution", new { ExecutionId = newExecutionId });
+                return Created(location, testExecution);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{ExecutionId}")]
+        public async Task<IActionResult> UpdateTestExecution(int executionId, TestExecution updatedTestExecution)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _testExecutionService.UpdateTestExecutionAsync(updatedTestExecution);
 
                 if (!success)
                 {
@@ -93,12 +93,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{ExecutionId}")]
+        public async Task<IActionResult> DeleteTestExecution(int executionId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _testExecutionService.DeleteTestExecutionAsync(executionId);
 
                 if (!success)
                 {

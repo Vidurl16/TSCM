@@ -18,5 +18,5 @@ public partial class TestSuite
     public string? Description { get; set; }
 
     [InverseProperty("Suite")]
-    public virtual ICollection<TestCase> TestCases { get; set; } = new List<TestCase>();
+    public virtual ICollection<TestCases> TestCases { get; set; } = new List<TestCases>();
 }

@@ -9,22 +9,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AttachmentsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAttachmentService _attachmentService;
 
-        public UsersController(IUserService userService)
+        public AttachmentsController(IAttachmentService attachmentService)
         {
-            _userService = userService;
+            _attachmentService = attachmentService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<Attachment>>> GetAllAttachments()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var attachments = await _attachmentService.GetAllAttachmentsAsync();
+                return Ok(attachments);
             }
             catch (Exception ex)
             {
@@ -33,19 +33,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{AttachmentId}")]
+        public async Task<ActionResult<Attachment>> GetAttachment(int attachmentId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var attachment = await _attachmentService.GetAttachmentByIdAsync(attachmentId);
 
-                if (user == null)
+                if (attachment == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(attachment);
             }
             catch (Exception ex)
             {
@@ -55,15 +55,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<Attachment>> CreateAttachment(Attachment attachment)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newAttachmentId = await _attachmentService.AddAttachmentAsync(attachment);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetAttachment", new { AttachmentId = newAttachmentId });
+                return Created(location, attachment);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{AttachmentId}")]
+        public async Task<IActionResult> UpdateAttachment(int attachmentId, Attachment updatedAttachment)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _attachmentService.UpdateAttachmentAsync(updatedAttachment);
 
                 if (!success)
                 {
@@ -93,12 +93,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{AttachmentId}")]
+        public async Task<IActionResult> DeleteAttachment(int attachmentId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _attachmentService.DeleteAttachmentAsync(attachmentId);
 
                 if (!success)
                 {

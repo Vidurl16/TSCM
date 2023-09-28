@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using API.Services;
-using API.Interfaces;
+using API.Interfaces.ServiceInterfaces;
 
 namespace API.Extensions
 {

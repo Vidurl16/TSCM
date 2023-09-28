@@ -25,7 +25,7 @@ public partial class Attachment
 
     [ForeignKey("CaseId")]
     [InverseProperty("Attachments")]
-    public virtual TestCase? Case { get; set; }
+    public virtual TestCases? Case { get; set; }
 
     [ForeignKey("ExecutionId")]
     [InverseProperty("Attachments")]

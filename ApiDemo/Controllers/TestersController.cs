@@ -1,6 +1,9 @@
 ﻿using API.Interfaces.ServiceInterfaces;
 using API.Repository.Models;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,22 +12,22 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TestCasesController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITestCasesService _testCasesService;
 
-        public UsersController(IUserService userService)
+        public TestCasesController(ITestCasesService testCasesService)
         {
-            _userService = userService;
+            _testCasesService = testCasesService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<TestCases>>> GetAllTestCases()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+                var testCases = await _testCasesService.GetAllTestCasesAsync();
+                return Ok(testCases);
             }
             catch (Exception ex)
             {
@@ -33,19 +36,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        [HttpGet("{CaseId}")]
+        public async Task<ActionResult<TestCases>> GetTestCase(int caseId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var testCase = await _testCasesService.GetTestCaseByIdAsync(caseId);
 
-                if (user == null)
+                if (testCase == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(testCase);
             }
             catch (Exception ex)
             {
@@ -55,15 +58,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<TestCases>> CreateTestCase(TestCases testCase)
         {
             try
             {
-                var newUserId = await _userService.AddUserAsync(user);
+                var newCaseId = await _testCasesService.AddTestCaseAsync(testCase);
 
                 // Generate the URL for the newly created resource
-                var location = Url.Action("GetUser", new { UserId = newUserId });
-                return Created(location, user);
+                var location = Url.Action("GetTestCase", new { CaseId = newCaseId });
+                return Created(location, testCase);
             }
             catch (Exception ex)
             {
@@ -72,12 +75,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUser(int userId, User updatedUser)
+        [HttpPut("{CaseId}")]
+        public async Task<IActionResult> UpdateTestCase(int caseId, TestCases updatedTestCase)
         {
             try
             {
-                var success = await _userService.UpdateUserAsync(updatedUser);
+                var success = await _testCasesService.UpdateTestCaseAsync(updatedTestCase);
 
                 if (!success)
                 {
@@ -93,12 +96,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{CaseId}")]
+        public async Task<IActionResult> DeleteTestCase(int caseId)
         {
             try
             {
-                var success = await _userService.DeleteUserAsync(userId);
+                var success = await _testCasesService.DeleteTestCaseAsync(caseId);
 
                 if (!success)
                 {
